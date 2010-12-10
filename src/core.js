@@ -3,9 +3,11 @@ var jQuery = (function() {
 // Define a local copy of jQuery
 var jQuery = function( selector, context ) {
 		// The jQuery object is actually just the init constructor 'enhanced'
-		return new jQuery.fn.init( selector, context );
+		
+		//Let's see what happens when the init constructor is not on the jQuery.prototype
+		return new init( selector, context );
 	},
-
+	
 	// Map over jQuery in case of overwrite
 	_jQuery = window.jQuery,
 
@@ -75,10 +77,10 @@ var jQuery = function( selector, context ) {
 	indexOf = Array.prototype.indexOf,
 	
 	// [[Class]] -> type pairs
-	class2type = {};
-
-jQuery.fn = jQuery.prototype = {
-	init: function( selector, context ) {
+	class2type = {},
+	
+	//Init constructor just in closure.. Not on jQuery.prototype
+	init = function( selector, context ) {
 		var match, elem, ret, doc;
 
 		// Handle $(""), $(null), or $(undefined)
@@ -92,7 +94,7 @@ jQuery.fn = jQuery.prototype = {
 			this.length = 1;
 			return this;
 		}
-		
+
 		// The body element only exists once, optimize finding it
 		if ( selector === "body" && !context && document.body ) {
 			this.context = document;
@@ -131,9 +133,9 @@ jQuery.fn = jQuery.prototype = {
 						ret = jQuery.buildFragment( [ match[1] ], [ doc ] );
 						selector = (ret.cacheable ? ret.fragment.cloneNode(true) : ret.fragment).childNodes;
 					}
-					
+
 					return jQuery.merge( this, selector );
-					
+
 				// HANDLE: $("#id")
 				} else {
 					elem = document.getElementById( match[2] );
@@ -186,8 +188,10 @@ jQuery.fn = jQuery.prototype = {
 		}
 
 		return jQuery.makeArray( selector, this );
-	},
+	};
 
+jQuery.fn = jQuery.prototype = {
+	
 	// Start with an empty selector
 	selector: "",
 
@@ -308,7 +312,7 @@ jQuery.fn = jQuery.prototype = {
 };
 
 // Give the init function the jQuery prototype for later instantiation
-jQuery.fn.init.prototype = jQuery.fn;
+init.prototype = jQuery.fn;
 
 jQuery.extend = jQuery.fn.extend = function() {
 	 var options, name, src, copy, copyIsArray, clone,

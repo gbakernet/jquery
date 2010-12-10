@@ -1,10 +1,6 @@
-src/selector.js
-dist
-.settings
+.project
 *~
 *.diff
 *.patch
-test/qunit
-src/sizzle
-/*.html
 .DS_Store
+
